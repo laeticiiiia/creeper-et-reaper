@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creeper et Reaper</title>
+<style>
+:root{--page:#F6F5F0;--surface-1:#ECEAE2;--surface-2:#FFFFFF;--border-strong:#B4B2A9;--text-primary:#2C2C2A;--text-secondary:#5F5E5A;--text-muted:#888780;--font-mono:ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--page:#1F1E1B;--surface-1:#2C2C2A;--surface-2:#3A3935;--border-strong:#5F5E5A;--text-primary:#F1EFE8;--text-secondary:#B4B2A9;--text-muted:#888780;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text-primary);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;justify-content:center;padding:24px 16px}
+main{width:100%;max-width:720px}
+h1{font-size:22px;font-weight:500;margin:0 0 4px}
+.sub{font-size:14px;color:var(--text-secondary);margin:0 0 16px}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--text-secondary);margin:0 0 6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+svg{display:block;width:100%;height:auto}
+#cap{font-size:15px;color:var(--text-secondary);margin:8px 0 12px;min-height:46px}
+.btns{display:flex;gap:8px}
+button{font:inherit;font-size:14px;padding:8px 16px;border-radius:8px;border:1px solid var(--border-strong);background:transparent;color:var(--text-primary);cursor:pointer}
+button:hover{background:var(--surface-1)}
+button:focus-visible{outline:2px solid #378ADD;outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<h1>Creeper et Reaper</h1>
+<p class="sub">1971 : le premier ver informatique et le programme qui le chasse.</p>
+<div class="legend"><span><i style="background:#D85A30"></i>Creeper</span><span><i style="background:#7F77DD"></i>Reaper</span></div>
+<svg viewBox="0 0 380 205" role="img" aria-label="Creeper court d'un PC à l'autre, poursuivi par Reaper qui finit par l'effacer.">
+<g id="pcs"></g>
+<path d="M64 140 Q64 152 80 152 L304 152 Q320 152 320 140" fill="none" stroke="var(--text-muted)" stroke-width="1.5"/>
+<circle id="pk" cy="152" r="3" fill="#378ADD"/>
+<line x1="0" y1="190" x2="380" y2="190" stroke="var(--border-strong)" stroke-width="0.5"/>
+<path id="sw" d="M272 30 L306 62" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+<g id="cr"><line x1="-5" y1="-11" x2="-8" y2="-17" stroke="#993C1D" stroke-width="1.5"/><line x1="5" y1="-11" x2="8" y2="-17" stroke="#993C1D" stroke-width="1.5"/><line id="l1" x1="-5" y1="10" x2="-5" y2="16" stroke="#993C1D" stroke-width="2" stroke-linecap="round"/><line id="l2" x1="5" y1="10" x2="5" y2="16" stroke="#993C1D" stroke-width="2" stroke-linecap="round"/><circle r="12" fill="#D85A30"/><g id="ey"><circle cx="-4" cy="-2" r="3.2" fill="#fff"/><circle cx="4" cy="-2" r="3.2" fill="#fff"/><circle cx="-3.5" cy="-2" r="1.3" fill="#4A1B0C"/><circle cx="4.5" cy="-2" r="1.3" fill="#4A1B0C"/><path d="M-4 5 Q0 8 4 5" fill="none" stroke="#4A1B0C" stroke-width="1.3"/></g><g id="ex" display="none" stroke="#4A1B0C" stroke-width="1.5" stroke-linecap="round"><path d="M-6 -5 L-2 -1 M-2 -5 L-6 -1 M2 -5 L6 -1 M6 -5 L2 -1"/><path d="M-4 7 Q0 4 4 7" fill="none"/></g></g>
+<g id="rp"><g id="sc"><line x1="17" y1="-20" x2="17" y2="15" stroke="#5F5E5A" stroke-width="2" stroke-linecap="round"/><path d="M17 -20 Q32 -22 30 -6" fill="none" stroke="#3C3489" stroke-width="3" stroke-linecap="round"/></g><path d="M-12 12 L-12 -4 Q-12 -17 0 -17 Q12 -17 12 -4 L12 12 L8 8 L4 12 L0 8 L-4 12 L-8 8 Z" fill="#CECBF6" stroke="#534AB7" stroke-width="1"/><ellipse cx="-4" cy="-4" rx="2.4" ry="3.2" fill="#26215C"/><ellipse cx="4" cy="-4" rx="2.4" ry="3.2" fill="#26215C"/><ellipse cx="0" cy="3" rx="2" ry="2.5" fill="#26215C"/></g>
+<text id="em" x="0" y="0" text-anchor="middle" font-size="18" font-weight="500" fill="var(--text-primary)"></text>
+</svg>
+<p id="cap"></p>
+<div class="btns"><button id="pb">Pause</button><button id="rb">Rejouer</button></div>
+</main>
+<script>
+const X=[64,192,320],M=["I'M THE","CREEPER :","CATCH ME","IF YOU CAN"],N=34;
+const pcs=document.getElementById('pcs');
+X.forEach((x,i)=>{let s='<rect x="'+(x-54)+'" y="12" width="108" height="100" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/><rect x="'+(x-48)+'" y="18" width="96" height="88" rx="4" fill="#13201B"/><rect x="'+(x-8)+'" y="112" width="16" height="16" fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="0.5"/><rect x="'+(x-26)+'" y="128" width="52" height="9" rx="3" fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="0.5"/>';
+for(let j=0;j<4;j++)s+='<text id="t'+i+j+'" x="'+(x-42)+'" y="'+(64+j*14)+'" font-family="var(--font-mono)" font-size="11" fill="#9FE1CB"></text>';
+pcs.insertAdjacentHTML('beforeend',s)});
+const g=id=>document.getElementById(id),cl=(v,a,b)=>Math.min(Math.max(v,a),b);
+const C=[[0,34,48,0,0],[300,34,48,.8,1],[2600,34,48,.8,1],[3000,64,168,1.3,1],[3100,64,168,1.3,1],[4400,192,168,1.3,1],[4800,162,48,.8,1],[5900,162,48,.8,1],[6200,192,168,1.3,1],[6300,192,168,1.3,1],[7300,320,168,1.3,1],[7700,290,48,.8,1],[9300,290,48,.8,1],[9700,290,48,.3,0],[14000,290,48,.3,0]];
+const G=[[0,64,60,0,0],[3200,64,60,0,0],[3700,64,160,1.3,1],[4000,64,160,1.3,1],[5300,255,160,1.3,1],[5700,255,160,1.3,1],[5950,192,160,1.3,1],[6300,192,160,1.3,1],[7500,320,160,1.3,1],[8100,350,46,.8,1],[8700,350,46,.8,1],[9000,296,46,.8,1],[9400,350,46,.8,1],[10000,320,160,1.3,1],[14000,320,160,1.3,1]];
+function kf(a,t){if(t<=a[0][0])return a[0].slice(1);for(let i=1;i<a.length;i++)if(t<=a[i][0]){const p=a[i-1],q=a[i],u=(t-p[0])/(q[0]-p[0]),e=u*u*(3-2*u);return [1,2,3,4].map(k=>p[k]+(q[k]-p[k])*e)}return a[a.length-1].slice(1)}
+const TY=[[300,2300],[4800,5800],[7700,8600]],ER=[[3000,3400],[6200,6600],[8800,9400]];
+function lines(i,t){const ty=cl((t-TY[i][0])/(TY[i][1]-TY[i][0]),0,1),er=1-cl((t-ER[i][0])/(ER[i][1]-ER[i][0]),0,1),c=Math.floor(Math.min(N*ty,N*er));let rem=c,last=-1;const out=M.map((l,j)=>{const k=Math.min(l.length,Math.max(rem,0));rem-=l.length;if(k>0)last=j;return l.slice(0,k)});if(c>0&&c<N)out[last]+='_';return out}
+const caps=[[0,"Creeper s'installe sur le premier PC et affiche son message."],[2600,"Il quitte l'écran, s'efface de la machine et court vers le PC suivant. Derrière lui, Reaper se réveille."],[4800,"Creeper s'installe sur le PC 2. Reaper le dépasse sans le voir…"],[5900,"Reaper le retrouve. Course-poursuite vers le dernier PC."],[7700,"Dernier PC du réseau : Creeper est coincé."],[8700,"Reaper frappe, et Creeper est effacé."],[9900,"Il ne reste plus que Reaper."]];
+let t=0,paused=false,last=performance.now(),ci=-1;
+function render(){
+let [cx,cy,cs,co]=kf(C,t),[cx2]=kf(C,t+40),[gx,gy,gs,go]=kf(G,t),[gx2]=kf(G,t+40);
+const run=(t>3100&&t<4400)||(t>6300&&t<7300);
+if(run)cy-=6*Math.abs(Math.sin(t/80));
+g('l1').setAttribute('transform','rotate('+(run?Math.sin(t/70)*35:0)+' -5 10)');g('l2').setAttribute('transform','rotate('+(run?-Math.sin(t/70)*35:0)+' 5 10)');
+const dead=t>8850;g('ey').setAttribute('display',dead?'none':'inline');g('ex').setAttribute('display',dead?'inline':'none');
+g('cr').setAttribute('transform','translate('+cx+','+cy+') scale('+(cx2<cx-.2?-cs:cs)+','+cs+')');g('cr').setAttribute('opacity',co);
+if(gy>100)gy+=3*Math.sin(t/180);
+g('rp').setAttribute('transform','translate('+gx+','+gy+') scale('+(gx2<gx-.2?-gs:gs)+','+gs+')');g('rp').setAttribute('opacity',go);
+const sw=t>8750&&t<9150?Math.sin((t-8750)/400*Math.PI)*-70:0;g('sc').setAttribute('transform','rotate('+sw+' 17 0)');
+g('sw').setAttribute('opacity',t>8980&&t<9150?1:0);
+const em=g('em');let e='';
+if(t>=5350&&t<5750){e='?';em.setAttribute('x',gx);em.setAttribute('y',gy-28)}
+else if(t>=6000&&t<6400){e='!';em.setAttribute('x',cx);em.setAttribute('y',cy-26)}
+em.textContent=e;
+for(let i=0;i<3;i++){const L=lines(i,t);for(let j=0;j<4;j++)g('t'+i+j).textContent=L[j]}
+g('pk').setAttribute('cx',64+256*((t/1100)%1));
+let c=0;caps.forEach((p,k)=>{if(t>=p[0])c=k});if(c!=ci){ci=c;g('cap').textContent=caps[c][1]}}
+function loop(n){const d=Math.min(n-last,50);last=n;if(!paused){t+=d;if(t>12500)t=0}render();requestAnimationFrame(loop)}
+g('pb').onclick=function(){paused=!paused;this.textContent=paused?'Reprendre':'Pause'};
+g('rb').onclick=function(){t=0;paused=false;g('pb').textContent='Pause'};
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
